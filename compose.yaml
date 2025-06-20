@@ -4,10 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3003:3003"
     environment:
-      - PORT=3000
+      - PORT=3003
+    command: npm run dev -- -p 3003
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run dev
