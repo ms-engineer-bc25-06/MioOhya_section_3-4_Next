@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import type { Expense } from '../../../type/expense';
@@ -20,6 +21,29 @@ function MonthlySummary() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+=======
+import { useState, useEffect } from 'react';
+import { TextField } from '@mui/material';
+import type { Expense } from '../../../type/expense';
+
+function MonthlySummary() {
+  const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM形式
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  useEffect(() => {
+    // APIからデータを取得
+    fetch('http://localhost:3001/expenses')
+      .then((res) => res.json())
+      .then((data: Expense[]) => {
+        setExpenses(data.filter(expense => 
+          expense.date.startsWith(selectedMonth)
+        ));
+      })
+      .catch((error) => {
+        console.error('API取得エラー:', error);
+      });
+  }, [selectedMonth]); // selectedMonthが変更されたら再取得
+>>>>>>> bb8e2b832ed264e8ed1995a871a0bc3db211aa3e
 
   const income = expenses
     .filter((expense) => expense.type === '収入')
