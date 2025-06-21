@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Expense } from '../../../type/expense';
+import type { Expense } from '../../../types/expense';
 import { useRouter } from 'next/navigation';
 import { ExpenseForm } from '../amend/page';
 

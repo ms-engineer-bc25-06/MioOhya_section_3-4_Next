@@ -1,6 +1,6 @@
-import type { Expense } from '../../../type/expense';
+import type { Expense } from '../../../types/expense';
 import { Category } from '../../../data/category';
-import { PrimaryButton } from '../../../component/MUIButton';
+import { PrimaryButton } from '../../../components/MUIButton';
 
 type ExpenseFormProps = {
   formData: Expense | Omit<Expense, 'id'>;

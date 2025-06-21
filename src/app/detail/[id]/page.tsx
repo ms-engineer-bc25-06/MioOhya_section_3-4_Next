@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Expense } from '../../../type/expense';
+import type { Expense } from '../../../types/expense';
 import { ExpenseForm } from '../../register/amend/page';
-import { PrimaryButton, DeleteButton, BackButton } from '../../../component/MUIButton';
+import { PrimaryButton, DeleteButton, BackButton } from '../../../components/MUIButton';
 import { useParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
