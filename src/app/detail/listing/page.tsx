@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import type { Expense } from '../../../types/expense';
-import ExpenseItem from '../../template/ExpenseItem';
+import ExpenseItem from '../../../components/ExpenseItem';
 import Link from 'next/link';
 import { PrimaryButton } from '../../../components/MUIButton';
 import useSWR from 'swr';
