@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Home, ListAlt, Add, BarChart } from '@mui/icons-material';
+import { Home, ListAlt, Add, BarChart, MonetizationOn } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { 
   Box, 
@@ -28,6 +28,8 @@ const menu = [
     {title: '明細一覧', icon: <ListAlt />, path: '/detail/listing'},
     {title: '新規登録', icon: <Add />, path: '/register/add'},
     {title: '月次集計', icon: <BarChart />, path: '/summary/monthly'},
+    { title: '予算管理', icon: <MonetizationOn />, path: '/budget' },
+
 ];
 
 export default function RootLayout({ children }: { children: ReactNode }) {
