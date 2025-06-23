@@ -44,49 +44,13 @@ function AddExpense() {
       }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-    
-        // --- バリデーションチェックを追加 ---
-        const newErrors = { date: '', category: '', amount: ''};
-        let isValid = true;
-
-        if (!formData.date) {
-            newErrors.date = '日付を入力してください';
-            isValid = false;
-        }
-        if (!formData.category) {
-            newErrors.category = 'カテゴリを選択してください';
-            isValid = false;
-        }
-        if (formData.amount <= 0) {
-            newErrors.amount = '金額は0より大きい値を入力してください';
-            isValid = false;
-        }
-
-        setErrors(newErrors);
-
-        // バリデーションエラーがあれば、ここで処理を中断
-        if (!isValid) {
-            return;
-        }
-        // --- バリデーションここまで ---
-
-        const response = await fetch('http://localhost:3002/expenses', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        const newExpense = await response.json();
-
-        // ここでidが正しく取得できているかconsole.logで確認
-        console.log('新規登録データ:', newExpense);
-
-        if (newExpense && newExpense.id) {
-          router.push(`/detail/listing`);
-        } else {
-          alert('登録に失敗しました');
-        }
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      fetch(`/api/expenses/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
     };
 
     // 成功時のメッセージ表示

@@ -16,7 +16,7 @@ function Detail() {
   const [editExpense, setEditExpense] = useState<Expense | null>(null);
 
   const { data: expense, error, isLoading } = useSWR(
-    id ? `http://localhost:3002/expenses/${id}` : null,
+    id ? `http://localhost:4000/expenses/${id}` : null,
     fetcher
   );
 
@@ -47,7 +47,7 @@ function Detail() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3002/expenses/${String(expense.id)}`, {
+      const response = await fetch(`http://localhost:4000/expenses/${String(expense.id)}`, {
         method: 'DELETE',
       });
 

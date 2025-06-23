@@ -21,8 +21,8 @@ type Expense = {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function BudgetSummary() {
-  const { data: budgets = [] } = useSWR<Budget[]>('http://localhost:3001/budgets', fetcher);
-  const { data: expenses = [] } = useSWR<Expense[]>('http://localhost:3001/expenses', fetcher);
+  const { data: budgets = [] } = useSWR<Budget[]>('http://localhost:4000', fetcher);
+  const { data: expenses = [] } = useSWR<Expense[]>('http://localhost:4000', fetcher);
 
   // 年月ごとの実績と予算の突き合わせ
   const getExpenseTotal = (year: number, month: number, category: string) => {

@@ -53,7 +53,7 @@ export function ExpenseForm({
         <label>メモ: </label>
         <input type="text" name="memo" value={formData.memo} onChange={onChange} />
       </div>
-      <PrimaryButton type="submit" sx={{ alignSelf: 'flex-start' }}>{submitButtonText}</PrimaryButton>
+      <PrimaryButton type="submit">{submitButtonText}</PrimaryButton>
     </div>
   );
 }
