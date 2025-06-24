@@ -63,7 +63,7 @@ export default function BudgetForm({
         月別予算の登録
       </Typography>
 
-      <Box noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box component="form" noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField
           label="年"
           type="number"
