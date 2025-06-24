@@ -9,12 +9,25 @@ import {
   Typography
 } from '@mui/material';
 import { Category } from '../data/category';
+import type { Budget } from '../types/budget';
 
-export default function BudgetForm() {
-  const [year, setYear] = useState(2025);
-  const [month, setMonth] = useState(6);
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState('');
+type BudgetFormProps = {
+  formData?: Budget;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  submitButtonText?: string;
+  onSubmit?: (e: React.FormEvent) => void;
+};
+
+export default function BudgetForm({
+  formData,
+  onChange,
+  submitButtonText = '登録',
+  onSubmit,
+}: BudgetFormProps) {
+  const [year, setYear] = useState(formData?.year ?? 2025);
+  const [month, setMonth] = useState(formData?.month ?? 6);
+  const [category, setCategory] = useState(formData?.category ?? '');
+  const [amount, setAmount] = useState(formData?.amount?.toString() ?? '');
 
   const handleSubmit = async () => {
     const newBudget = {
@@ -50,7 +63,7 @@ export default function BudgetForm() {
         月別予算の登録
       </Typography>
 
-      <Box component="form" noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField
           label="年"
           type="number"
@@ -80,8 +93,8 @@ export default function BudgetForm() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <Button variant="contained" onClick={handleSubmit}>
-          登録
+        <Button variant="contained" type="submit" onClick={handleSubmit}>
+          {submitButtonText}
         </Button>
       </Box>
     </Box>
