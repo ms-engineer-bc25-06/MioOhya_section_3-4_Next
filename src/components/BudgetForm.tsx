@@ -8,6 +8,7 @@ import {
   MenuItem,
   Typography
 } from '@mui/material';
+import { Category } from '../data/category';
 
 export default function BudgetForm() {
   const [year, setYear] = useState(2025);
@@ -69,10 +70,9 @@ export default function BudgetForm() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <MenuItem value="食費">食費</MenuItem>
-          <MenuItem value="交通費">交通費</MenuItem>
-          <MenuItem value="日用品">日用品</MenuItem>
-          <MenuItem value="娯楽">娯楽</MenuItem>
+          {Category.map((category: string) => (
+            <MenuItem key={category} value={category}>{category}</MenuItem>
+          ))}
         </TextField>
         <TextField
           label="予算金額"
