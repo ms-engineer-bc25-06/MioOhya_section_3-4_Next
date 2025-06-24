@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import type { Expense } from '../../../types/expense';
 import ExpenseForm from '../../../components/ExpenseForm';
-import { useParams } from 'next/navigation';
+import useSWR from 'swr';
+import { fetcher } from '../../../lib/fetcher';
+import { useRouter } from 'next/navigation';
 
 function AddExpense() {
     const [formData, setFormData] = useState<Omit<Expense, 'id'>>({
@@ -21,6 +23,9 @@ function AddExpense() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+
+    const { mutate } = useSWR('http://localhost:4000/expenses', fetcher);
+    const router = useRouter();
 
     // フォーム入力変更時のハンドラ
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -41,13 +46,15 @@ function AddExpense() {
       }));
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      fetch('/api/expenses', {
+      await fetch('http://localhost:4000/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      mutate();
+      router.push('/detail/listing');
     };
 
     // 成功時のメッセージ表示
