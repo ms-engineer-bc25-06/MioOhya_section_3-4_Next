@@ -3,6 +3,7 @@
 import useSWR from 'swr';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
+
 type Budget = {
   id: number;
   year: number;
