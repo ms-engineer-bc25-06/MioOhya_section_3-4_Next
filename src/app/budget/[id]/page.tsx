@@ -1,28 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import type { Expense } from '../../../types/expense';
-import ExpenseForm from '../../../components/ExpenseForm';
+import type { Budget } from '../../../types/budget';
+import BudgetForm from '../../../components/BudgetForm';
 import { PrimaryButton, DeleteButton, BackButton } from '../../../components/MUIButton';
 import { useParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 
-function Detail() {
+function BudgetDetail() {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editExpense, setEditExpense] = useState<Expense | null>(null);
+  const [editBudget, setEditBudget] = useState<Budget | null>(null);
 
-  const { data: expense, error, isLoading } = useSWR(
-    id ? `http://localhost:4000/expenses/${id}` : null,
+  const { data: budget, error, isLoading } = useSWR(
+    id ? `http://localhost:4000/budgets/${id}` : null,
     fetcher
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditExpense((prev: Expense | null) => {
+    setEditBudget((prev: Budget | null) => {
       if (!prev) return null;
       return { ...prev, [name]: value };
     });
@@ -30,32 +30,26 @@ function Detail() {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editExpense || !editExpense.id) {
-      return;
+    if (!editBudget || !editBudget.id) {
+        return;
     }
     try {
-      const response = await fetch(`http://localhost:4000/expenses/${editExpense.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editExpense),
-      });
-
-      if (!response.ok) {
-        throw new Error('更新に失敗しました');
-      }
-
-      alert('更新が完了しました！');
-      // 必要に応じて画面遷移や再取得
-      // 例: router.push('/detail/listing');
+        const response = await fetch(`http://localhost:4000/budgets/${String(budget.id)}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editBudget),
+        });
+        alert('更新が完了しました！');
+        router.push('/budget/listing');
     } catch (err) {
-      alert('エラーが発生しました');
+        throw err instanceof Error ? err : new Error('更新中にエラーが発生しました');
     }
   };
 
   const handleDelete = async () => {
-    if (!expense || !expense.id) {
+    if (!budget || !budget.id) {
       throw new Error('削除するデータがありません');
     }
 
@@ -64,7 +58,7 @@ function Detail() {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/expenses/${String(expense.id)}`, {
+      const response = await fetch(`http://localhost:4000/budgets/${String(budget.id)}`, {
         method: 'DELETE',
       });
 
@@ -73,39 +67,39 @@ function Detail() {
       }
 
       alert('削除が完了しました！');
-      router.push('/detail/listing');
+      router.push('/budget/listing');
     } catch (err) {
       throw err instanceof Error ? err : new Error('削除中にエラーが発生しました');
     }
   };
 
   const handleEditMode = () => {
-    setEditExpense(expense ? { ...expense } : null);
+    setEditBudget(budget ? { ...budget } : null);
     setIsEditMode(true);
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!expense) return <div>データが見つかりません</div>;
+  if (!budget) return <div>データが見つかりません</div>;
 
   return (
     <div>
       <h2>詳細</h2>
-      {isEditMode && editExpense ? (
+      {isEditMode && editBudget ? (
         <form onSubmit={handleUpdate}>
-          <ExpenseForm
-            formData={editExpense}
+          <BudgetForm
+            formData={editBudget}
             onChange={handleChange}
             submitButtonText="保存"
+            onSubmit={handleUpdate}
           />
         </form>
       ) : (
         <div>
-          <p>日付: {expense.date}</p>
-          <p>種類: {expense.type}</p>
-          <p>カテゴリ: {expense.category}</p>
-          <p>金額: ¥{expense.amount.toLocaleString()}</p>
-          <p>メモ: {expense.memo || 'なし'}</p>
+          <p>年: {budget.year}</p>
+          <p>月: {budget.month}</p>
+          <p>カテゴリ: {budget.category}</p>
+          <p>金額: ¥{budget.amount.toLocaleString()}</p>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <PrimaryButton onClick={handleEditMode}>
               更新
@@ -113,7 +107,7 @@ function Detail() {
             <DeleteButton onClick={handleDelete}>
               削除
             </DeleteButton>
-            <BackButton onClick={() => router.push('/detail/listing')}>
+            <BackButton onClick={() => router.push('/budget/listing')}>
               戻る
             </BackButton>
           </div>
@@ -123,4 +117,4 @@ function Detail() {
   );
 }
 
-export default Detail;
+export default BudgetDetail;

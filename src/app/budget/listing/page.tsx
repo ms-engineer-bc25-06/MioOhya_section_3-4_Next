@@ -19,7 +19,7 @@ function BudgetList() {
 
   return (
     <div>
-      <h1>家計簿一覧</h1>
+      <h1>予算一覧</h1>
       <ul>
         {budgets.map((budget: Budget) => (
           <li key={budget.id}>
