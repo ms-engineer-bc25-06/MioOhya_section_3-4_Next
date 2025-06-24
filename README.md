@@ -1,1 +1,1 @@
-![structureimage](./README_img/structureimg.png)
+![structureimage](./README_img/structureimg2)
