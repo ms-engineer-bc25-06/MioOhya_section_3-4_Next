@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import type { Expense } from '../../../types/expense';
-import { useRouter } from 'next/navigation';
-import { ExpenseForm } from '../amend/page';
-
+import ExpenseForm from '../../../components/ExpenseForm';
+import { useParams } from 'next/navigation';
 
 function AddExpense() {
     const [formData, setFormData] = useState<Omit<Expense, 'id'>>({
@@ -22,8 +21,6 @@ function AddExpense() {
     });
 
     const [submitted, setSubmitted] = useState(false);
-
-    const router = useRouter();
 
     // フォーム入力変更時のハンドラ
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -46,8 +43,8 @@ function AddExpense() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      fetch(`/api/expenses/${id}`, {
-        method: 'PUT',
+      fetch('/api/expenses', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });

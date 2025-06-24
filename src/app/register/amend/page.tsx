@@ -1,59 +1,78 @@
 import type { Expense } from '../../../types/expense';
-import { Category } from '../../../data/category';
-import { PrimaryButton } from '../../../components/MUIButton';
+import  ExpenseForm  from '../../../components/ExpenseForm';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
-type ExpenseFormProps = {
-  formData: Expense | Omit<Expense, 'id'>;
-  onChange: (expense: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  submitButtonText: string;
-  errors?: { date?: string, category?: string, amount?: string };
-};
 
-export function ExpenseForm({ 
-  formData, 
-  onChange, 
-  submitButtonText,
-  errors = {}
-}: ExpenseFormProps) {
+function AmendExpense() {
+  const [formData, setFormData] = useState<Omit<Expense, 'id'>>({
+    date: '',
+    type: '支出',
+    category: '',
+    amount: 0,
+    memo: '',
+  });
+
+  const [errors, setErrors] = useState({
+    date: '',
+    category: '',
+    amount: '',
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const params = useParams();
+  const id = params.id;
+
+  // フォーム入力変更時のハンドラ
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    // 金額のバリデーション
+    if (name === 'amount') {
+      if (!value) {
+        setErrors(prev => ({ ...prev, amount: '金額を入力してください' }));
+      } else {
+        setErrors(prev => ({ ...prev, amount: '' }));
+      }
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'amount' ? Number(value) : value,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    fetch(`/api/expenses/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+  };
+
+  // 成功時のメッセージ表示
+  useEffect(() => {
+    if (submitted) {
+      alert('更新が完了しました🌼');
+      setSubmitted(false);
+    }
+  }, [submitted]);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <label>日付: </label>
-        <input type="date" name="date" value={formData.date} onChange={onChange} required />
-      </div>
-      <div>
-        <label>種別: </label>
-        <select name="type" value={formData.type} onChange={onChange}>
-          <option value="支出">支出</option>
-          <option value="収入">収入</option>
-        </select>
-      </div>
-      <div>
-        <label>カテゴリ: </label>
-        <select name="category" value={formData.category} onChange={onChange} required>
-          <option value="">選択してください</option>
-          {Category.map((category: string) => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label>金額: </label>
-        <input 
-          type="text" 
-          name="amount" 
-          value={formData.amount || ''} 
+    <div>
+      <h2>家計を更新</h2>
+      <form onSubmit={handleSubmit}>
+        <ExpenseForm
+          formData={formData}
           onChange={onChange}
-          placeholder="金額を入力"
-          required 
+          submitButtonText="更新"
+          errors={errors}
         />
-        {errors.amount && <span style={{ color: 'red', fontSize: '0.8em' }}>{errors.amount}</span>}
-      </div>
-      <div>
-        <label>メモ: </label>
-        <input type="text" name="memo" value={formData.memo} onChange={onChange} />
-      </div>
-      <PrimaryButton type="submit">{submitButtonText}</PrimaryButton>
+      </form>
     </div>
   );
 }
+
+export default AmendExpense;

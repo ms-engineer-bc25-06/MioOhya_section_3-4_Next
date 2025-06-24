@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Expense } from '../../../types/expense';
-import { ExpenseForm } from '../../register/amend/page';
+import ExpenseForm from '../../../components/ExpenseForm';
 import { PrimaryButton, DeleteButton, BackButton } from '../../../components/MUIButton';
 import { useParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
