@@ -1,8 +1,12 @@
+'use client'
+
 import type { Expense } from '../../../types/expense';
 import  ExpenseForm  from '../../../components/ExpenseForm';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-
+import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
+import { fetcher } from '../../../lib/fetcher';
 
 function AmendExpense() {
   const [formData, setFormData] = useState<Omit<Expense, 'id'>>({
@@ -20,7 +24,8 @@ function AmendExpense() {
   });
 
   const [submitted, setSubmitted] = useState(false);
-
+  const router = useRouter();
+  const { mutate } = useSWR('http://localhost:4000/expenses', fetcher);
   const params = useParams();
   const id = params.id;
 
@@ -43,13 +48,15 @@ function AmendExpense() {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    fetch(`/api/expenses/${id}`, {
+    await fetch(`http://localhost:4000/expenses/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
+    mutate();
+    router.push('/detail/listing');
   };
 
   // 成功時のメッセージ表示
