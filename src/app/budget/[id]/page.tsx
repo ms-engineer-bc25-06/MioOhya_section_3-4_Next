@@ -96,7 +96,7 @@ function BudgetDetail() {
         </form>
       ) : (
         <div>
-          <p>年: {budget.year}</p>
+          <p>年: {budget.Year}</p>
           <p>月: {budget.month}</p>
           <p>カテゴリ: {budget.category}</p>
           <p>金額: ¥{budget.amount.toLocaleString()}</p>

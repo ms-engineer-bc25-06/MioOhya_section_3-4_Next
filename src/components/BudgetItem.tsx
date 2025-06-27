@@ -6,7 +6,7 @@ type Props = {
 
 const BudgetItem = ({ budget }: Props) => (
   <div>
-    {budget.year} | {budget.month} | {budget.category} | ¥{budget.amount}
+    {budget.Year} | {budget.month} | {budget.category} | ¥{budget.amount}
   </div>
 );
 

@@ -24,8 +24,12 @@ export default function BudgetForm({
   submitButtonText = '登録',
   onSubmit,
 }: BudgetFormProps) {
-  const [year, setYear] = useState(formData?.year ?? 2025);
-  const [month, setMonth] = useState(formData?.month ?? 6);
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1; // getMonth()は0始まりなので+1
+
+  const [year, setYear] = useState(formData?.Year ?? currentYear);
+  const [month, setMonth] = useState(formData?.month ?? currentMonth);
   const [category, setCategory] = useState(formData?.category ?? '');
   const [amount, setAmount] = useState(formData?.amount?.toString() ?? '');
 

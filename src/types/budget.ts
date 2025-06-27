@@ -1,6 +1,6 @@
 export type Budget = {
   id: number;
-  year: number;
+  Year: number;
   month: number;
   category: string;
   amount: number;
