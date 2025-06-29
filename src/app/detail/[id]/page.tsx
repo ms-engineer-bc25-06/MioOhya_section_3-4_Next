@@ -47,8 +47,7 @@ function Detail() {
       }
 
       alert('更新が完了しました！');
-      // 必要に応じて画面遷移や再取得
-      // 例: router.push('/detail/listing');
+      router.push('/detail/listing');
     } catch (err) {
       alert('エラーが発生しました');
     }
@@ -80,7 +79,15 @@ function Detail() {
   };
 
   const handleEditMode = () => {
-    setEditExpense(expense ? { ...expense } : null);
+    if (expense) {
+      // 日付をYYYY-MM-DD形式に変換
+      const formattedDate = expense.date
+        ? new Date(expense.date).toISOString().slice(0, 10)
+        : '';
+      setEditExpense({ ...expense, date: formattedDate });
+    } else {
+      setEditExpense(null);
+    }
     setIsEditMode(true);
   };
 
@@ -101,7 +108,7 @@ function Detail() {
         </form>
       ) : (
         <div>
-          <p>日付: {expense.date}</p>
+          <p>日付: {expense.date ? new Date(expense.date).toISOString().slice(0, 10) : ''}</p>
           <p>種類: {expense.type}</p>
           <p>カテゴリ: {expense.category}</p>
           <p>金額: ¥{expense.amount.toLocaleString()}</p>

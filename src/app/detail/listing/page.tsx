@@ -15,9 +15,18 @@ function ExpenseList() {
   );
   const router = useRouter();
 
+  console.log(expenses);
+
+  // データ取得中
   if (isLoading) return <div>Loading...</div>;
+
+  // データ取得時にエラーが発生した場合
   if (error) return <div>Error: {error.message}</div>;
-  if (!expenses) return <div>データがありません</div>;
+
+  // データが配列でない場合（APIレスポンス不正など）
+  if (!Array.isArray(expenses)) {
+    return <div>データの取得に失敗しました</div>;
+  }
 
   return (
     <div>
