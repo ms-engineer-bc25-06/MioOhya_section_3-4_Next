@@ -16,7 +16,7 @@ function BudgetDetail() {
   const [editBudget, setEditBudget] = useState<Budget | null>(null);
 
   const { data: budget, error, isLoading } = useSWR(
-    id ? `http://localhost:3003/budgets/${id}` : null,
+    id ? `${process.env.NEXT_PUBLIC_API_URL}/budgets/${id}` : null,
     fetcher
   );
 

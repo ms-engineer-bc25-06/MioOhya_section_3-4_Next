@@ -16,7 +16,7 @@ function Detail() {
   const [editExpense, setEditExpense] = useState<Expense | null>(null);
 
   const { data: expense, error, isLoading } = useSWR(
-    id ? `http://localhost:3003/expenses/${id}` : null,
+    id ? `${process.env.NEXT_PUBLIC_API_URL}/expenses/${id}` : null,
     fetcher
   );
 

@@ -10,7 +10,7 @@ function MonthlySummary() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM形式
 
   const { data: allExpenses, error, isLoading } = useSWR<Expense[]>(
-    'http://localhost:3003/expenses',
+    `${process.env.NEXT_PUBLIC_API_URL}/expenses`,
     fetcher
   );
 

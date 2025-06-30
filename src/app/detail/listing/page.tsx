@@ -10,7 +10,7 @@ import { fetcher } from '@/lib/fetcher';
 
 function ExpenseList() {
   const { data: expenses, error, isLoading } = useSWR(
-    'http://localhost:3003/expenses',
+    `${process.env.NEXT_PUBLIC_API_URL}/expenses`,
     fetcher
   );
   const router = useRouter();
