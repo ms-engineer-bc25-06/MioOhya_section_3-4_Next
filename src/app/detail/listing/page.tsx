@@ -10,7 +10,7 @@ import { fetcher } from '@/lib/fetcher';
 
 function ExpenseList() {
   const { data: expenses, error, isLoading } = useSWR(
-    'http://localhost:4000/expenses',
+    'http://localhost:3003/expenses',
     fetcher
   );
   const router = useRouter();

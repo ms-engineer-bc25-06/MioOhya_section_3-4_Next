@@ -16,7 +16,7 @@ function BudgetDetail() {
   const [editBudget, setEditBudget] = useState<Budget | null>(null);
 
   const { data: budget, error, isLoading } = useSWR(
-    id ? `http://localhost:4000/budgets/${id}` : null,
+    id ? `http://localhost:3003/budgets/${id}` : null,
     fetcher
   );
 
@@ -34,7 +34,7 @@ function BudgetDetail() {
         return;
     }
     try {
-        const response = await fetch(`http://localhost:4000/budgets/${String(budget.id)}`, {
+        const response = await fetch(`http://localhost:3003/budgets/${String(budget.id)}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function BudgetDetail() {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/budgets/${String(budget.id)}`, {
+      const response = await fetch(`http://localhost:3003/budgets/${String(budget.id)}`, {
         method: 'DELETE',
       });
 

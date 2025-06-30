@@ -8,7 +8,7 @@ import { fetcher } from '@/lib/fetcher';
 
 function BudgetList() {
   const { data: budgets, error, isLoading } = useSWR(
-    'http://localhost:4000/budgets',
+    'http://localhost:3003/budgets',
     fetcher
   );
 

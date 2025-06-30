@@ -24,7 +24,7 @@ function AddExpense() {
 
     const [submitted, setSubmitted] = useState(false);
 
-    const { mutate } = useSWR('http://localhost:4000/expenses', fetcher);
+    const { mutate } = useSWR('http://localhost:3003/expenses', fetcher);
     const router = useRouter();
 
     // フォーム入力変更時のハンドラ
@@ -54,7 +54,7 @@ function AddExpense() {
       const isoDate = formData.date ? new Date(formData.date).toISOString() : '';
       const sendData = { ...formData, date: isoDate };
 
-      await fetch('http://localhost:4000/expenses', {
+      await fetch('http://localhost:3003/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sendData),
