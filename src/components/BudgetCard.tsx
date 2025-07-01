@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material'
 
 type BudgetCardProps = {
-  year: number;
-  month: number;
-  category: string;
-  budgetAmount: number;
-  actualAmount: number;
-};
+  year: number
+  month: number
+  category: string
+  budgetAmount: number
+  actualAmount: number
+}
 
 export default function BudgetCard({
   year,
@@ -17,8 +17,8 @@ export default function BudgetCard({
   budgetAmount,
   actualAmount,
 }: BudgetCardProps) {
-  const difference = budgetAmount - actualAmount;
-  const status = difference >= 0 ? '✅ 範囲内' : '⚠️ オーバー';
+  const difference = budgetAmount - actualAmount
+  const status = difference >= 0 ? '✅ 範囲内' : '⚠️ オーバー'
 
   return (
     <Card sx={{ mb: 2 }}>
@@ -35,5 +35,5 @@ export default function BudgetCard({
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }

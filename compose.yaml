@@ -1,10 +1,11 @@
+version: '3'
 services:
   next:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3002:3003"
+      - '3002:3003'
     environment:
       - PORT=3003
     command: npm run dev -- -p 3003

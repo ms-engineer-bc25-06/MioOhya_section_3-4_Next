@@ -1,17 +1,25 @@
 # Node.js lts image
-FROM node:lts
+# Node.jsの推奨LTSバージョン（alpine版は軽量）
+FROM node:lts-alpine
 
-# ワーキングディレクトリを指定
-WORKDIR /usr/src/app
+# コンテナ内の作業ディレクトリを指定
+WORKDIR /app
 
-# 同一ディレクトリ内のファイルを全てコピー
-COPY . .
+# .dockerignoreファイルで不要なファイルを除外するのを忘れない！
 
-# パッケージをインストール
+# 1. package.jsonとlockファイルを先にコピー
+COPY package.json ./
+# npmをお使いならpackage-lock.jsonも
+COPY package-lock.json ./
+
+# 2. 依存関係をインストール（package.jsonに変更がなければキャッシュが使われる）
 RUN npm install
 
-# 3000番ポートでリッスン
+# 3. ソースコードをコピー
+COPY . .
+
+# ポートを公開
 EXPOSE 3000
 
-# React の起動
+# 開発サーバーを起動
 CMD ["npm", "run", "dev"]

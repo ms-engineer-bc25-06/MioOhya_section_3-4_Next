@@ -1,22 +1,18 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import {
-  Box,
-  TextField,
-  Button,
-  MenuItem,
-  Typography
-} from '@mui/material';
-import { Category } from '../data/category';
-import type { Budget } from '../types/budget';
+import { useState } from 'react'
+import { Box, TextField, Button, MenuItem, Typography } from '@mui/material'
+import { Category } from '../data/category'
+import type { Budget } from '../types/budget'
 
 type BudgetFormProps = {
-  formData?: Budget;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  submitButtonText?: string;
-  onSubmit?: (e: React.FormEvent) => void;
-};
+  formData?: Budget
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void
+  submitButtonText?: string
+  onSubmit?: (e: React.FormEvent) => void
+}
 
 export default function BudgetForm({
   formData,
@@ -24,14 +20,14 @@ export default function BudgetForm({
   submitButtonText = '登録',
   onSubmit,
 }: BudgetFormProps) {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1; // getMonth()は0始まりなので+1
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = now.getMonth() + 1 // getMonth()は0始まりなので+1
 
-  const [year, setYear] = useState(formData?.Year ?? currentYear);
-  const [month, setMonth] = useState(formData?.month ?? currentMonth);
-  const [category, setCategory] = useState(formData?.category ?? '');
-  const [amount, setAmount] = useState(formData?.amount?.toString() ?? '');
+  const [year, setYear] = useState(formData?.Year ?? currentYear)
+  const [month, setMonth] = useState(formData?.month ?? currentMonth)
+  const [category, setCategory] = useState(formData?.category ?? '')
+  const [amount, setAmount] = useState(formData?.amount?.toString() ?? '')
 
   const handleSubmit = async () => {
     const newBudget = {
@@ -39,27 +35,27 @@ export default function BudgetForm({
       month,
       category,
       amount: Number(amount),
-    };
+    }
 
     try {
       const res = await fetch('http://localhost:4000/budgets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newBudget),
-      });
+      })
 
       if (res.ok) {
-        alert('登録に成功しました！');
-        setCategory('');
-        setAmount('');
+        alert('登録に成功しました！')
+        setCategory('')
+        setAmount('')
       } else {
-        alert('登録に失敗しました');
+        alert('登録に失敗しました')
       }
     } catch (err) {
-      console.error(err);
-      alert('エラーが発生しました');
+      console.error(err)
+      alert('エラーが発生しました')
     }
-  };
+  }
 
   return (
     <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
@@ -67,7 +63,12 @@ export default function BudgetForm({
         月別予算の登録
       </Typography>
 
-      <Box component="form" noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+      >
         <TextField
           label="年"
           type="number"
@@ -88,7 +89,9 @@ export default function BudgetForm({
           onChange={(e) => setCategory(e.target.value)}
         >
           {Category.map((category: string) => (
-            <MenuItem key={category} value={category}>{category}</MenuItem>
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
           ))}
         </TextField>
         <TextField
@@ -102,5 +105,5 @@ export default function BudgetForm({
         </Button>
       </Box>
     </Box>
-  );
+  )
 }

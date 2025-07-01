@@ -1,12 +1,12 @@
-'use client';
-import BudgetForm from '../../components/BudgetForm';
-import BudgetList from './listing/page';
-import BudgetSummary from './summary/page';
-import { Box, Button } from '@mui/material';
-import { useState } from 'react';
+'use client'
+import BudgetForm from '../../components/BudgetForm'
+import BudgetList from './listing/page'
+import BudgetSummary from './summary/page'
+import { Box, Button } from '@mui/material'
+import { useState } from 'react'
 
 export default function BudgetPage() {
-  const [active, setActive] = useState<'form' | 'listing'| 'summary'>('form');
+  const [active, setActive] = useState<'form' | 'listing' | 'summary'>('form')
 
   return (
     <Box sx={{ p: 2 }}>
@@ -20,5 +20,5 @@ export default function BudgetPage() {
       {active === 'listing' && <BudgetList />}
       {active === 'summary' && <BudgetSummary />}
     </Box>
-  );
+  )
 }

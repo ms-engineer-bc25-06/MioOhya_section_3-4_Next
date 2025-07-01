@@ -1,21 +1,21 @@
-'use client';
+'use client'
 
-import type { Budget } from '../../../types/budget';
-import BudgetItem from '../../../components/BudgetItem';
-import Link from 'next/link';
-import useSWR from 'swr';
-import { fetcher } from '@/lib/fetcher';
+import type { Budget } from '../../../types/budget'
+import BudgetItem from '../../../components/BudgetItem'
+import Link from 'next/link'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/fetcher'
 
 function BudgetList() {
-  const { data: budgets, error, isLoading } = useSWR(
-    '${process.env.NEXT_PUBLIC_API_URL}/budgets',
-    fetcher
-  );
+  const {
+    data: budgets,
+    error,
+    isLoading,
+  } = useSWR('${process.env.NEXT_PUBLIC_API_URL}/budgets', fetcher)
 
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!budgets) return <div>データがありません</div>;
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  if (!budgets) return <div>データがありません</div>
 
   return (
     <div>
@@ -30,7 +30,7 @@ function BudgetList() {
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default BudgetList;
+export default BudgetList

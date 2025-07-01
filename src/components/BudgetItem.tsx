@@ -1,13 +1,13 @@
-import type { Budget } from '../types/budget';
+import type { Budget } from '../types/budget'
 
 type Props = {
-  budget: Budget;
-};
+  budget: Budget
+}
 
 const BudgetItem = ({ budget }: Props) => (
   <div>
     {budget.Year} | {budget.month} | {budget.category} | ¥{budget.amount}
   </div>
-);
+)
 
-export default BudgetItem;
+export default BudgetItem

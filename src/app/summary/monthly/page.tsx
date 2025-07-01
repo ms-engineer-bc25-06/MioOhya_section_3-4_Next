@@ -1,33 +1,36 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { TextField } from '@mui/material';
-import type { Expense } from '../../../types/expense';
-import useSWR from 'swr';
-import { fetcher } from '@/lib/fetcher';
+import { useState } from 'react'
+import { TextField } from '@mui/material'
+import type { Expense } from '../../../types/expense'
+import useSWR from 'swr'
+import { fetcher } from '@/lib/fetcher'
 
 function MonthlySummary() {
-  const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM形式
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date().toISOString().slice(0, 7),
+  ) // YYYY-MM形式
 
-  const { data: allExpenses, error, isLoading } = useSWR<Expense[]>(
-    `${process.env.NEXT_PUBLIC_API_URL}/expenses`,
-    fetcher
-  );
+  const {
+    data: allExpenses,
+    error,
+    isLoading,
+  } = useSWR<Expense[]>(`${process.env.NEXT_PUBLIC_API_URL}/expenses`, fetcher)
 
   const expenses: Expense[] = allExpenses
     ? allExpenses.filter((expense) => expense.date.startsWith(selectedMonth))
-    : [];
+    : []
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
 
   const income = expenses
     .filter((expense) => expense.type === '収入')
-    .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    .reduce((sum, expense) => sum + Number(expense.amount), 0)
 
   const outcome = expenses
     .filter((expense) => expense.type === '支出')
-    .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    .reduce((sum, expense) => sum + Number(expense.amount), 0)
 
   return (
     <div>
@@ -45,7 +48,7 @@ function MonthlySummary() {
         <p>差額: ¥{(income - outcome).toLocaleString()}</p>
       </div>
     </div>
-  );
+  )
 }
 
-export default MonthlySummary;
+export default MonthlySummary

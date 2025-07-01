@@ -14,5 +14,5 @@ export const Category: string[] = [
   '給料',
   '賞与',
   '副業',
-  'その他'
-];
+  'その他',
+]
