@@ -10,5 +10,5 @@ services:
       - PORT=3003
     command: npm run dev -- -p 3003
     volumes:
-      - .:/usr/src/app
+      - .:/app  # ← ★「/usr/src/app」から「/app」に修正！
       # - /usr/src/app/node_modules

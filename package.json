@@ -10,7 +10,8 @@
     "format": "prettier --write . --ignore-path .gitignore",
     "mock-api": "json-server --watch ../db.json --port 3002",
     "test": "npx vitest",
-    "test:watch": "npx vitest --watch"
+    "test:watch": "npx vitest --watch",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -26,27 +27,31 @@
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.30.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^1.6.1",
     "eslint": "^9.30.0",
     "eslint-config-next": "^15.3.4",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
     "globals": "^16.2.0",
+    "jsdom": "^24.1.0",
     "json-server": "^1.0.0-beta.3",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "typescript-eslint": "^8.35.0",
-        "@testing-library/jest-dom": "^6.4.6",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/user-event": "^14.5.2",
-    "@vitejs/plugin-react": "^4.3.1",
-    "jsdom": "^24.1.0",
     "vitest": "^1.6.0"
+  },
+    "overrides": {
+    "vite": "^5.3.1"
   }
 }

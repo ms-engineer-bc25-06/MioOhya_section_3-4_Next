@@ -1,17 +1,23 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom', // DOMをシミュレートする環境を指定
-    setupFiles: './tests/setup.ts', // 各テストの前に実行するセットアップファイル
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'), // Next.jsのエイリアスと合わせる
+    environment: 'jsdom',
+    setupFiles: './vitest.setup.ts',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'], // ターミナルとHTMLでレポート出力
+      // ↓ カバレッジ計測から除外するファイルを指定
+      exclude: [
+        'node_modules/',
+        '.next/',
+        'coverage/',
+        '*.config.js',
+        '*.config.ts',
+      ],
     },
   },
-});
+})
