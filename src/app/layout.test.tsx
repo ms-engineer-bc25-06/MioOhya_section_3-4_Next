@@ -42,7 +42,7 @@ describe('Layout Component', () => {
             expect(homeLink).not.toBeInTheDocument();
         });
 
-        //メニュー配列ろいうデータが存在しない場合、クラッシュさせない
+        //メニュー配列データが存在しない場合、クラッシュさせない
         test('should not crash when menu is null', () => {
             expect(() => {
                 render(<RootLayout menu={null}><div></div></RootLayout>);
