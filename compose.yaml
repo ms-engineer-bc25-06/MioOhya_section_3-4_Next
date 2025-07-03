@@ -5,10 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3002:3003'
-    environment:
-      - PORT=3003
-    command: npm run dev -- -p 3003
+      # アプリが使うポート3002をホストとコンテナで繋ぐ
+      - '3002:3002'
     volumes:
-      - .:/app  # ← ★「/usr/src/app」から「/app」に修正！
-      # - /usr/src/app/node_modules
+      - .:/app
+   
+    # environment:
+    #   - PORT=3003
+    command: npm run dev

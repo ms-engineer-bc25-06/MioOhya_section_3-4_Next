@@ -1,5 +1,5 @@
 # Playwrightのブラウザが含まれた公式イメージを使う
-FROM mcr.microsoft.com/playwright:v1.45.1-jammy
+FROM mcr.microsoft.com/playwright:v1.53.2-jammy
 
 # コンテナ内の作業ディレクトリを指定
 WORKDIR /app
