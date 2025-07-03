@@ -31,18 +31,22 @@ describe('Layout Component', () => {
             expect(summaryLink).toBeInTheDocument();
             expect(budgetLink).toBeInTheDocument();
         });
-    
+    });
+
     //異常系テスト
     describe('unhappy path', () => {
+        //メニューバーの配列が空のとき、リンク非表示
         test('should not render navigation links when menu array is empty', () => {
             render(<RootLayout menu={[]}><div></div></RootLayout>);
             const homeLink = screen.queryByRole('button', { name: 'ホーム'});
             expect(homeLink).not.toBeInTheDocument();
+        });
 
-
-    test('should not crash when menu is null', () => {
-        expect(() => {
-        render(<RootLayout menu={null}><div></div></RootLayout>);
-        }).not.toThrow();
-  });
+        //メニュー配列ろいうデータが存在しない場合、クラッシュさせない
+        test('should not crash when menu is null', () => {
+            expect(() => {
+                render(<RootLayout menu={null}><div></div></RootLayout>);
+            }).not.toThrow();
+        });
+    });
 });

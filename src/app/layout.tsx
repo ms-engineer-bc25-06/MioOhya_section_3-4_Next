@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { ReactNode } from 'react'
+import type { ReactNode, ReactElement } from 'react'
 import {
   Home,
   ListAlt,
@@ -25,19 +25,26 @@ import {
   ListItemText,
 } from '@mui/material'
 import { useRouter, usePathname } from 'next/navigation'
-import Link from 'next/link'
 
 const drawerWidth = 240
 
-const menu = [
+// menuの定義をコンポーネントの外に出し、名前をdefaultMenuに変更
+const defaultMenu = [
   { title: 'ホーム', icon: <Home />, path: '/' },
   { title: '明細一覧', icon: <ListAlt />, path: '/detail/listing' },
   { title: '新規登録', icon: <Add />, path: '/register/add' },
   { title: '月次集計', icon: <BarChart />, path: '/summary/monthly' },
   { title: '予算管理', icon: <MonetizationOn />, path: '/budget' },
-]
+];
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+// props型定義（menuは配列であることを示す）
+interface RootLayoutProps {
+  children: ReactNode;
+  menu?: { title: string; icon: React.ReactElement; path: string }[] | null;
+}
+
+// propsでmenuを受け取り、デフォ値を設定
+export default function RootLayout({ children, menu = defaultMenu }: RootLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const router = useRouter()
@@ -66,20 +73,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const drawer = (
     <Box sx={{ height: '100vh' }}>
       <List>
-        {menu.map((menu) => (
-          <ListItem key={menu.title} disablePadding>
+        {menu?.map((item) => (    //オプショナルチェーンでnullも対応できるように
+          <ListItem key={item.title} disablePadding>
             <ListItemButton
-              onClick={() => handleNavigation(menu.path)}
-              selected={pathname === menu.path}
+              onClick={() => handleNavigation(item.path)}
+              selected={pathname === item.path}
             >
-              <ListItemIcon>{menu.icon}</ListItemIcon>
-              <ListItemText primary={menu.title} />
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Box>
-  )
+  );
 
   return (
     <html lang="ja">
@@ -158,3 +165,4 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   )
 }
+
