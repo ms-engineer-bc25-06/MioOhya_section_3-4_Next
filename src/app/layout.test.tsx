@@ -37,7 +37,7 @@ describe('Layout Component', () => {
     describe('unhappy path', () => {
         //メニューバーの配列が空のとき、リンク非表示
         test('should not render navigation links when menu array is empty', () => {
-            render(<RootLayout menu={[]}><div></div></RootLayout>);
+            render(<RootLayout><div></div></RootLayout>);
             const homeLink = screen.queryByRole('button', { name: 'ホーム'});
             expect(homeLink).not.toBeInTheDocument();
         });
@@ -45,7 +45,7 @@ describe('Layout Component', () => {
         //メニュー配列データが存在しない場合、クラッシュさせない
         test('should not crash when menu is null', () => {
             expect(() => {
-                render(<RootLayout menu={null}><div></div></RootLayout>);
+                render(<RootLayout><div></div></RootLayout>);
             }).not.toThrow();
         });
     });

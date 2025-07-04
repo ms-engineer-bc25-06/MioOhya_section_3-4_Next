@@ -7,10 +7,24 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
+    
+    // ↓↓↓ この include 設定を追加します ↓↓↓
+    include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+
+    // exclude は念のため残しておいても良いです
+    exclude: [
+      'node_modules/',
+      '**/dist/**',
+      '.next/',
+      'coverage/',
+      '**/e2e/**',
+      '**/tests-examples/**',
+      '*.config.js',
+      '*.config.ts',
+    ],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html'], // ターミナルとHTMLでレポート出力
-      // ↓ カバレッジ計測から除外するファイルを指定
+      reporter: ['text', 'html'],
       exclude: [
         'node_modules/',
         '.next/',
