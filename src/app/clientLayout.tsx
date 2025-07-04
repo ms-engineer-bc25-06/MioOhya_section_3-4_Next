@@ -1,7 +1,7 @@
 'use client'; // クライアントコンポーネントであることを宣言
 
 import { useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ReactNode, ReactElement } from 'react';
 import {
   Home,
   ListAlt,
@@ -36,7 +36,12 @@ const defaultMenu = [
   { title: '予算管理', icon: <MonetizationOn />, path: '/budget' },
 ];
 
-export default function ClientLayout({ children }: { children: ReactNode }) {
+interface ClientLayoutProps {
+  children: ReactNode;
+  menu?: { title: string; icon: ReactElement; path: string }[] | null;
+}
+
+export default function ClientLayout({ children, menu = defaultMenu }: ClientLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const router = useRouter();
@@ -65,7 +70,7 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const drawer = (
     <Box sx={{ height: '100vh' }}>
       <List>
-        {defaultMenu.map((item) => (
+        {menu?.map((item) => (
           <ListItem key={item.title} disablePadding>
             <ListItemButton
               onClick={() => handleNavigation(item.path)}

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect,vi } from 'vitest';
-import RootLayout from './layout' 
+import ClientLayout from './clientLayout'
 
 //モック設定
 vi.mock('next/navigation', () => ({
@@ -17,7 +17,7 @@ describe('Layout Component', () => {
     //正常系テスト
     describe('happy path', () => {
         test('renders navigation links work correctly', () => {
-            render(<RootLayout><div></div></RootLayout>);
+            render(<ClientLayout><div>Test Child</div></ClientLayout>);           
             //要素を探す
             const homeLink = screen.getByRole('button', { name: 'ホーム'});
             const detailListingLink = screen.getByRole('button', { name: '明細一覧'});
@@ -37,7 +37,7 @@ describe('Layout Component', () => {
     describe('unhappy path', () => {
         //メニューバーの配列が空のとき、リンク非表示
         test('should not render navigation links when menu array is empty', () => {
-            render(<RootLayout><div></div></RootLayout>);
+            render(<ClientLayout menu={[]}><div></div></ClientLayout>);
             const homeLink = screen.queryByRole('button', { name: 'ホーム'});
             expect(homeLink).not.toBeInTheDocument();
         });
@@ -45,7 +45,9 @@ describe('Layout Component', () => {
         //メニュー配列データが存在しない場合、クラッシュさせない
         test('should not crash when menu is null', () => {
             expect(() => {
-                render(<RootLayout><div></div></RootLayout>);
+            render(<ClientLayout menu={null}><div></div></ClientLayout>);
+            const homeLink = screen.queryByRole('button', { name: 'ホーム'});
+            expect(homeLink).not.toBeInTheDocument();
             }).not.toThrow();
         });
     });
