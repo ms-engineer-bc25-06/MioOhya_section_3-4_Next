@@ -8,9 +8,10 @@ import {
   DeleteButton,
   BackButton,
 } from '../../../components/MUIButton'
+import ErrorMessage from '../../../components/ErrorMessage'
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
-import { fetcher } from '@/lib/fetcher'
+import { fetcher, type FetchError } from '@/lib/fetcher'
 
 function Detail() {
   const params = useParams()
@@ -19,6 +20,7 @@ function Detail() {
   const [isEditMode, setIsEditMode] = useState(false)
   const [editExpense, setEditExpense] = useState<Expense | null>(null)
 
+  // SWRを使用してデータを取得
   const {
     data: expense,
     error,
@@ -28,6 +30,27 @@ function Detail() {
     fetcher,
   )
 
+  /**
+   * 編集モードの切り替え処理
+   * 日付をYYYY-MM-DD形式に変換して編集用データを設定
+   */
+  const handleEditMode = () => {
+    if (expense) {
+      // 日付をYYYY-MM-DD形式に変換
+      const formattedDate = expense.date
+        ? new Date(expense.date).toISOString().slice(0, 10)
+        : ''
+      setEditExpense({ ...expense, date: formattedDate })
+    } else {
+      setEditExpense(null)
+    }
+    setIsEditMode(true)
+  }
+
+  /**
+   * フォーム入力値の変更を処理
+   * @param e - 入力イベント
+   */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -38,6 +61,10 @@ function Detail() {
     })
   }
 
+  /**
+   * 支出データの更新処理
+   * @param e - フォーム送信イベント
+   */
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editExpense || !editExpense.id) {
@@ -56,19 +83,25 @@ function Detail() {
       )
 
       if (!response.ok) {
-        throw new Error('更新に失敗しました')
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.message || `更新に失敗しました (${response.status})`)
       }
 
       alert('更新が完了しました！')
       router.push('/detail/listing')
     } catch (err) {
-      alert('エラーが発生しました')
+      const errorMessage = err instanceof Error ? err.message : 'エラーが発生しました'
+      alert(errorMessage)
     }
   }
 
+  /**
+   * 支出データの削除処理
+   */
   const handleDelete = async () => {
     if (!expense || !expense.id) {
-      throw new Error('削除するデータがありません')
+      alert('削除するデータがありません')
+      return
     }
 
     if (!window.confirm('本当に削除しますか？')) {
@@ -84,35 +117,31 @@ function Detail() {
       )
 
       if (!response.ok) {
-        throw new Error('削除に失敗しました')
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.message || `削除に失敗しました (${response.status})`)
       }
 
       alert('削除が完了しました！')
       router.push('/detail/listing')
     } catch (err) {
-      throw err instanceof Error
-        ? err
-        : new Error('削除中にエラーが発生しました')
+      const errorMessage = err instanceof Error ? err.message : '削除中にエラーが発生しました'
+      alert(errorMessage)
     }
   }
 
-  const handleEditMode = () => {
-    if (expense) {
-      // 日付をYYYY-MM-DD形式に変換
-      const formattedDate = expense.date
-        ? new Date(expense.date).toISOString().slice(0, 10)
-        : ''
-      setEditExpense({ ...expense, date: formattedDate })
-    } else {
-      setEditExpense(null)
-    }
-    setIsEditMode(true)
-  }
-
+  // SWRの状態に応じた表示制御
+  // ローディング状態の表示
   if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
+  
+  // エラー状態の表示
+  if (error) {
+    return <ErrorMessage error={error} />
+  }
+  
+  // データが存在しない場合の表示
   if (!expense) return <div>データが見つかりません</div>
 
+  // データ取得成功時の表示（詳細表示モードまたは編集モードの表示内容を定義）
   return (
     <div>
       <h2>詳細</h2>

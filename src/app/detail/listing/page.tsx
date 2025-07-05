@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import type { Expense } from '../../../types/expense'
 import ExpenseItem from '../../../components/ExpenseItem'
+import ErrorMessage from '../../../components/ErrorMessage'
 import Link from 'next/link'
 import { PrimaryButton } from '../../../components/MUIButton'
 import useSWR from 'swr'
@@ -22,7 +23,7 @@ function ExpenseList() {
   if (isLoading) return <div>Loading...</div>
 
   // データ取得時にエラーが発生した場合
-  if (error) return <div>Error: {error.message}</div>
+  if (error) return <ErrorMessage error={error} />
 
   // データが配列でない場合（APIレスポンス不正など）
   if (!Array.isArray(expenses)) {
